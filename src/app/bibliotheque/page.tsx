@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { Play, Heart } from "lucide-react";
 
 export default function Home() {
   interface File {
@@ -23,37 +24,49 @@ export default function Home() {
     <div className="min-h-screen text-white p-8 sm:p-20">
       <main className="flex flex-col gap-8">
         <h1 className="text-3xl font-bold text-center">Bibliothèque</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
           {downloadedFiles.map((file) => (
             <div
               key={file.title}
-              className="flex flex-col items-center bg-[#1E1E1E] p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+              className="relative flex flex-col items-center bg-[#1E1E1E] p-2 rounded-md shadow-md hover:shadow-lg transition-shadow"
             >
-              {file.thumbnail ? (
-                <img
-                  src={file.thumbnail}
-                  alt={file.title}
-                  className="w-48 h-48 object-cover rounded-lg mb-4"
-                />
-              ) : (
-                <div className="w-48 h-48 flex items-center justify-center bg-gray-700 text-gray-400 rounded-lg mb-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-16 w-16"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19V6l12-2v13M9 10l12-2M9 14l12-2"
-                    />
-                  </svg>
+              <div className="relative group">
+                {file.thumbnail ? (
+                  <img
+                    src={file.thumbnail}
+                    alt={file.title}
+                    className="w-32 h-32 object-cover rounded-md mb-2 transition-transform group-hover:blur-sm"
+                  />
+                ) : (
+                  <div className="w-32 h-32 flex items-center justify-center bg-gray-700 text-gray-400 rounded-md mb-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-12 w-12"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 19V6l12-2v13M9 10l12-2M9 14l12-2"
+                      />
+                    </svg>
+                  </div>
+                )}
+
+                {/* Icônes Play et Like */}
+                <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black bg-opacity-50 rounded-md opacity-0 group-hover:opacity-50 transition-opacity">
+                  <button className="p-2 bg-white rounded-full text-black hover:bg-gray-200">
+                    <Play size={20} />
+                  </button>
+                  <button className="p-2 bg-white rounded-full text-black hover:bg-gray-200">
+                    <Heart size={20} />
+                  </button>
                 </div>
-              )}
-              <p className="text-lg font-semibold text-center">{file.title}</p>
+              </div>
+              <p className="text-sm font-medium text-center">{file.title}</p>
             </div>
           ))}
         </div>
