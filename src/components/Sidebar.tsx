@@ -1,3 +1,4 @@
+"use client";
 import { Folder, FolderOpen, Play, Plus, Heart } from "lucide-react"; 
 import { AiFillHeart } from "react-icons/ai";
 
@@ -14,6 +15,7 @@ export default function Sidebar() {
         <button
           className="relative group p-4 rounded-xl transition"
           title="Bibliothèque"
+          onClick={() => window.location.href = '/bibliotheque'}
         >
           <Folder
             size={28}
