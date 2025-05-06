@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Play, Heart } from "lucide-react";
 
-export default function Home() {
+export default function Bibliotheque() {
   interface File {
     title: string;
     thumbnail?: string;
@@ -11,7 +11,7 @@ export default function Home() {
   const [downloadedFiles, setDownloadedFiles] = useState<File[]>([]);
 
   const fetchDownloadedFiles = async () => {
-    const res = await fetch('/api/files');
+    const res = await fetch("/api/files");
     const data = await res.json();
     setDownloadedFiles(data.files);
   };
@@ -21,10 +21,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen text-white p-8 sm:p-20">
-      <main className="flex flex-col gap-8">
-        <h1 className="text-3xl font-bold text-center">Bibliothèque</h1>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+      <main className="flex flex-col gap-8 flex-grow text-white">
+        <h1 className="text-3xl font-bold text-center sm:text-left">Bibliothèque</h1>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
           {downloadedFiles.map((file) => (
             <div
               key={file.title}
@@ -74,6 +73,5 @@ export default function Home() {
           <p className="text-center text-gray-400">Aucun fichier téléchargé pour le moment.</p>
         )}
       </main>
-    </div>
   );
 }
