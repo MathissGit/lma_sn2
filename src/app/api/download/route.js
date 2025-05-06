@@ -20,7 +20,7 @@ export async function POST(req) {
   const outputFile = path.join(outputDir, "%(title)s.webm");
 
   // Commande pour télécharger la vidéo au format WebM
-  const downloadCommand = `yt-dlp -f "bestvideo[ext=webm]+bestaudio[ext=webm]/best[ext=webm]" --merge-output-format webm -o "${outputFile}" ${url}`;
+  const downloadCommand = `yt-dlp -f "bestvideo[ext=webm]+bestaudio[ext=webm]/best[ext=webm]" --merge-output-format webm --write-thumbnail -o "${outputFile}" ${url}`;
 
   return new Promise((resolve, reject) => {
     exec(downloadCommand, (error, stdout, stderr) => {
