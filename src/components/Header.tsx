@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, User, Bell } from "lucide-react";
+import { CircleArrowDown, User, Bell } from "lucide-react";
 
 export default function Header({ onSubmit }: { onSubmit: (link: string) => void }) {
 const [inputValue, setInputValue] = useState("");
@@ -20,7 +20,7 @@ return (
 
     <div className="flex-1 flex justify-center">
         <form onSubmit={handleSubmit} className="relative w-1/3">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        <CircleArrowDown className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         <input
             type="text"
             value={inputValue}

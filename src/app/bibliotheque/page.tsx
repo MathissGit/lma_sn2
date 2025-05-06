@@ -17,7 +17,7 @@ export default function Bibliotheque() {
   };
 
   useEffect(() => {
-    fetchDownloadedFiles(); // Charger les fichiers téléchargés au chargement de la page
+    fetchDownloadedFiles();
   }, []);
 
   return (
@@ -27,14 +27,14 @@ export default function Bibliotheque() {
           {downloadedFiles.map((file) => (
             <div
               key={file.title}
-              className="relative flex flex-col items-center bg-[#1E1E1E] p-2 rounded-md shadow-md hover:shadow-lg transition-shadow"
+              className="relative flex flex-col items-center bg-[#1E1E1E] p-2 rounded-md"
             >
               <div className="relative group">
                 {file.thumbnail ? (
                   <img
                     src={file.thumbnail}
                     alt={file.title}
-                    className="w-32 h-32 object-cover rounded-md mb-2 transition-transform group-hover:blur-sm"
+                    className="w-32 h-32 object-cover rounded-md mb-2 transition-transform group-hover:blur-xs"
                   />
                 ) : (
                   <div className="w-32 h-32 flex items-center justify-center bg-gray-700 text-gray-400 rounded-md mb-2">
@@ -54,8 +54,6 @@ export default function Bibliotheque() {
                     </svg>
                   </div>
                 )}
-
-                {/* Icônes Play et Like */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4 rounded-md opacity-0 group-hover:opacity-50 transition-opacity">
                   <button className="p-2 bg-white rounded-full text-black hover:bg-gray-200">
                     <Play size={20} />

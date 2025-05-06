@@ -5,9 +5,10 @@ import "xterm/css/xterm.css";
 
 interface TerminalComponentProps {
   link: string;
+  onReload: () => void;
 }
 
-export default function TerminalComponent({ link }: TerminalComponentProps) {
+export default function TerminalComponent({ link, onReload }: TerminalComponentProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<any>(null);
 
@@ -19,18 +20,27 @@ export default function TerminalComponent({ link }: TerminalComponentProps) {
             background: "#000000",
             foreground: "#ffffff",
           },
+          disableStdin: true,
+          cursorStyle: "underline",
           cursorBlink: true,
           fontSize: 16,
-          fontFamily: "'Courier New', monospace",
+          fontFamily: "'Geist', monospace",
           scrollback: 1000,
+          
         });
+        const style = document.createElement("style");
+          style.innerHTML = `
+            .xterm .xterm-cursor {
+              display: none !important;
+            }
+          `;
+          document.head.appendChild(style);
 
         if (terminalRef.current) {
           term.open(terminalRef.current);
         }
 
-        term.writeln("Bienvenue dans le terminal !");
-        term.write("$ ");
+        term.writeln("\x1b[37mTerminal \x1b[38;2;3;218;198mWeScrap\x1b[37m.mp3\x1b[0m");
         termRef.current = term;
       });
     }
@@ -42,9 +52,7 @@ export default function TerminalComponent({ link }: TerminalComponentProps) {
 
       term.writeln(`\r\nLien soumis : ${link}`);
       term.writeln("Scraping en cours...");
-      term.write("$ "); // Affiche une nouvelle invite de commande
 
-      // Appeler l'API pour démarrer le scraping
       fetch("/api/download", {
         method: "POST",
         headers: {
@@ -58,31 +66,29 @@ export default function TerminalComponent({ link }: TerminalComponentProps) {
             term.writeln(`Erreur : ${data.error}`);
           } else {
             term.writeln("Scraping terminé avec succès !");
-            term.write("$ ");
 
-            // Appeler l'API pour récupérer les fichiers téléchargés
             fetch("/api/files")
               .then((response) => response.json())
               .then((filesData) => {
                 if (filesData.files && filesData.files.length > 0) {
-                  term.writeln("\nFichiers téléchargés :");
-                  filesData.files.forEach((file: { title: string; url: string }) => {
-                    term.writeln(`- ${file.title}: ${file.url}`);
-                  });
+                  const latestFile = filesData.files[filesData.files.length - 1]; // Récupère le dernier fichier
+                  term.writeln("\nFichier téléchargé :");
+                  term.writeln(`- ${latestFile.title}: ${latestFile.url}`);
                 } else {
                   term.writeln("\nAucun fichier téléchargé.");
                 }
-                term.write("$ ");
+
+                onReload();
               })
               .catch((error) => {
                 term.writeln(`Erreur lors de la récupération des fichiers : ${error.message}`);
-                term.write("$ ");
+                onReload();
               });
           }
         })
         .catch((error) => {
           term.writeln(`Erreur de connexion : ${error.message}`);
-          term.write("$ ");
+          onReload();
         });
     }
   }, [link]);

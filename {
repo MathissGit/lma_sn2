@@ -1,0 +1,7 @@
+[generic] Extracting URL: fetch(/api/files)
+[generic] Extracting URL: .then((response)
+[generic] Extracting URL: =
+[generic] Extracting URL: .then((filesData)
+[generic] Extracting URL: =
+[generic] Extracting URL: if
+[generic] Extracting URL: (filesData.files

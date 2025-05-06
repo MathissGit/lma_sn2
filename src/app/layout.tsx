@@ -8,10 +8,15 @@ import Sidebar from "@/components/Sidebar";
 import TerminalComponent from "@/components/Terminal";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [reloadKey, setReloadKey] = useState(0);
   const [link, setLink] = useState("");
 
   const handleLinkSubmit = (submittedLink: string) => {
     setLink(submittedLink);
+  };
+
+  const reloadChildren = () => {
+    setReloadKey((prevKey) => prevKey + 1); // Incrémente la clé uniquement lorsque nécessaire
   };
 
   return (
@@ -21,16 +26,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <Sidebar />
 
-        <div className="ml-[120px] mt-24 mb-24 h-[calc(100vh-96px-96px)] flex gap-4">
+        <div className="ml-[120px] mt-24 mb-24 h-[calc(100vh-96px-96px)] bg-[#000000] flex gap-5">
           <main className="flex-[0.65] h-full overflow-auto">
             <div className="bg-[#1e1e1e] rounded-xl shadow-lg p-8 w-full h-full">
-              {children}
+              <div key={reloadKey}>{children}</div>
             </div>
           </main>
 
-          <section className="flex-[0.35] h-full overflow-auto">
+          <section className="flex-[0.35] h-full overflow-auto mr-4">
             <div className="bg-[#1e1e1e] rounded-xl shadow-lg p-8 w-full h-full">
-              <TerminalComponent link={link} />
+              <TerminalComponent link={link} onReload={reloadChildren} />
             </div>
           </section>
         </div>
