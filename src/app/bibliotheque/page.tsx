@@ -57,7 +57,7 @@ export default function Home() {
                 )}
 
                 {/* Icônes Play et Like */}
-                <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black bg-opacity-50 rounded-md opacity-0 group-hover:opacity-50 transition-opacity">
+                <div className="absolute inset-0 flex items-center justify-center gap-4 rounded-md opacity-0 group-hover:opacity-50 transition-opacity">
                   <button className="p-2 bg-white rounded-full text-black hover:bg-gray-200">
                     <Play size={20} />
                   </button>

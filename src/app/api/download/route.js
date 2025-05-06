@@ -6,7 +6,9 @@ export async function POST(req) {
   const { url } = await req.json();
 
   if (!url) {
-    return new Response(JSON.stringify({ error: "URL manquante" }), { status: 400 });
+    return new Response(JSON.stringify({ error: "URL manquante" }), {
+      status: 400,
+    });
   }
 
   const outputDir = path.resolve(process.cwd(), "public", "downloads");
@@ -26,7 +28,11 @@ export async function POST(req) {
     exec(downloadCommand, (error, stdout, stderr) => {
       if (error) {
         console.error("Erreur lors du téléchargement :", stderr);
-        reject(new Response(JSON.stringify({ error: "Échec du téléchargement" }), { status: 500 }));
+        reject(
+          new Response(JSON.stringify({ error: "Échec du téléchargement" }), {
+            status: 500,
+          })
+        );
         return;
       }
 
@@ -34,11 +40,20 @@ export async function POST(req) {
 
       // Supposons que le fichier final est correctement créé
       const fileNameMatch = stdout.match(/Merging formats into "(.*)"/);
-      const fileName = fileNameMatch ? path.basename(fileNameMatch[1]) : "fichier_inconnu.webm";
+      const fileName = fileNameMatch
+        ? path.basename(fileNameMatch[1])
+        : "fichier_inconnu.webm";
 
       if (!fileName) {
         console.error("Impossible de localiser le fichier final.");
-        reject(new Response(JSON.stringify({ error: "Impossible de localiser le fichier final" }), { status: 500 }));
+        reject(
+          new Response(
+            JSON.stringify({
+              error: "Impossible de localiser le fichier final",
+            }),
+            { status: 500 }
+          )
+        );
         return;
       }
 

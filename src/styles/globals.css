@@ -10,3 +10,15 @@ body {
   color: var(--foreground);
   font-family: 'Geist Mono', monospace;
 }
+
+.terminal-container {
+  overflow: hidden;
+}
+
+.terminal-container .xterm-viewport {
+  scrollbar-width: none;
+}
+
+.terminal-container .xterm-viewport::-webkit-scrollbar {
+  display: none; 
+}
