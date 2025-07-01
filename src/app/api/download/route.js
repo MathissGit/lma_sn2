@@ -24,11 +24,13 @@ export async function POST(req) {
   // Commande pour télécharger la vidéo au format WebM
   const downloadCommand = `yt-dlp -f "bestvideo[ext=webm]+bestaudio[ext=webm]/best[ext=webm]" --merge-output-format webm --write-thumbnail -o "${outputFile}" ${url}`;
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     exec(downloadCommand, (error, stdout, stderr) => {
+      console.log("stdout:", stdout);
+      console.log("stderr:", stderr);
       if (error) {
         console.error("Erreur lors du téléchargement :", stderr);
-        reject(
+        resolve(
           new Response(JSON.stringify({ error: "Échec du téléchargement" }), {
             status: 500,
           })
@@ -46,7 +48,7 @@ export async function POST(req) {
 
       if (!fileName) {
         console.error("Impossible de localiser le fichier final.");
-        reject(
+        resolve(
           new Response(
             JSON.stringify({
               error: "Impossible de localiser le fichier final",
