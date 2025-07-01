@@ -1,6 +1,6 @@
 "use client";
 
-import { Play, Pause, SkipBack, SkipForward, VolumeX, Volume1, Volume2 } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Shuffle, Repeat, VolumeX, Volume1, Volume2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { usePlayer } from "../context/PlayerContext";
 
@@ -22,6 +22,7 @@ export default function Footer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [volume, setVolume] = useState(50);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isRepeat, setIsRepeat] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -112,6 +113,7 @@ export default function Footer() {
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 h-24 z-50 bg-[#000000] px-6 py-4 flex items-center justify-between">
+      {/* Infos musique */}
       <div className="flex items-center gap-4">
         <img
           src={currentTrack?.thumbnail || "https://via.placeholder.com/48"}
@@ -123,6 +125,7 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Contrôles centraux */}
       <div className="flex flex-col items-center gap-2 w-[350px]">
         <div className="flex items-center gap-4">
           <button
@@ -171,6 +174,7 @@ export default function Footer() {
             ref={audioRef}
             src={currentTrack.url}
             autoPlay
+            loop={isRepeat}
             onEnded={handleNext}
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
@@ -179,6 +183,7 @@ export default function Footer() {
         )}
       </div>
 
+      {/* Volume */}
       <div className="flex items-center gap-4">
         {getVolumeIcon()}
         <input

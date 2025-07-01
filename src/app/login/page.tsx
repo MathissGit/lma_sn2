@@ -26,7 +26,8 @@ export default function LoginPage() {
       password,
     });
     if (!error) {
-      router.push("/"); 
+      await router.replace("/"); // Redirige et remplace l'URL
+      router.refresh();          // Force la mise à jour côté serveur
     } else {
       alert("Login failed: " + error.message);
     }
