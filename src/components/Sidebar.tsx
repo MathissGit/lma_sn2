@@ -30,6 +30,7 @@ export default function Sidebar() {
         <button
           className="relative group p-4 rounded-xl transition"
           title="Morceaux aimés"
+          onClick={() => window.location.href = '/favoris'}
         >
           <Heart
             size={28}

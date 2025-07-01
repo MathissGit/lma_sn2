@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Play, Heart, HeartFilled } from "lucide-react";
+import { Play, Heart } from "lucide-react";
 import { usePlayer } from "../../context/PlayerContext";
 
-export default function Bibliotheque() {
+export default function Favoris() {
   interface File {
     title: string;
     thumbnail?: string;
@@ -14,31 +14,32 @@ export default function Bibliotheque() {
   const [liked, setLiked] = useState<string[]>([]);
   const { setCurrentTrack } = usePlayer();
 
-  const fetchDownloadedFiles = async () => {
-    const res = await fetch("/api/files");
-    const data = await res.json();
-    setDownloadedFiles(data.files);
-  };
-
   useEffect(() => {
-    fetchDownloadedFiles();
+    // Récupère les fichiers
+    fetch("/api/files")
+      .then((res) => res.json())
+      .then((data) => setDownloadedFiles(data.files || []));
   }, []);
 
-  const toggleLike = (title: string) => {
-    setLiked((prev) =>
-      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
-    );
-  };
+  useEffect(() => {
+    // Toujours lire les likes depuis le localStorage à chaque affichage
+    const storedLikes = localStorage.getItem("likedTitles");
+    if (storedLikes) setLiked(JSON.parse(storedLikes));
+  }, [downloadedFiles]);
 
+  // Optionnel : sauvegarder les likes dans le localStorage
   useEffect(() => {
     localStorage.setItem("likedTitles", JSON.stringify(liked));
   }, [liked]);
 
+  // Filtrer les fichiers likés
+  const likedFiles = downloadedFiles.filter((file) => liked.includes(file.title));
+
   return (
     <main className="flex flex-col gap-8 flex-grow text-white">
-      <h1 className="text-3xl font-bold text-center sm:text-left">Bibliothèque</h1>
+      <h1 className="text-3xl font-bold text-center sm:text-left">Favoris</h1>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
-        {downloadedFiles.map((file) => (
+        {likedFiles.map((file) => (
           <div
             key={file.title}
             className="relative flex flex-col items-center bg-[#1E1E1E] p-2 rounded-md"
@@ -75,7 +76,7 @@ export default function Bibliotheque() {
                     setCurrentTrack({
                       title: file.title,
                       thumbnail: file.thumbnail,
-                      url: file.url, // Assure-toi que file.url existe dans l'API /api/files
+                      url: file.url,
                     })
                   }
                 >
@@ -83,17 +84,16 @@ export default function Bibliotheque() {
                 </button>
                 <button
                   className="p-2 bg-white rounded-full text-black hover:bg-gray-200 transition-colors"
-                  onClick={() => toggleLike(file.title)}
-                  title={
-                    liked.includes(file.title)
-                      ? "Retirer des favoris"
-                      : "Ajouter aux favoris"
+                  // Ici, le like est toujours actif, donc le cœur est coloré
+                  title="Retirer des favoris"
+                  onClick={() =>
+                    setLiked((prev) => prev.filter((t) => t !== file.title))
                   }
                 >
                   <Heart
                     size={20}
-                    fill={liked.includes(file.title) ? "#03DAC6" : "none"}
-                    stroke={liked.includes(file.title) ? "#03DAC6" : "currentColor"}
+                    fill="#03DAC6"
+                    stroke="#03DAC6"
                   />
                 </button>
               </div>
@@ -102,8 +102,8 @@ export default function Bibliotheque() {
           </div>
         ))}
       </div>
-      {downloadedFiles.length === 0 && (
-        <p className="text-center text-gray-400">Aucun fichier téléchargé pour le moment.</p>
+      {likedFiles.length === 0 && (
+        <p className="text-center text-gray-400">Aucun favori pour le moment.</p>
       )}
     </main>
   );
