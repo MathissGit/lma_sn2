@@ -46,7 +46,7 @@ export default function Sidebar() {
 
         <div className="flex flex-col gap-5 mt-6 flex-1 overflow-y-auto">
           <button
-            className="relative group p-4 rounded-xl transition bg-stone-800 rounded-xl"
+            className="relative group p-4 rounded-xl transition bg-stone-800"
             title="Créer une playlist"
           >
             <Plus
