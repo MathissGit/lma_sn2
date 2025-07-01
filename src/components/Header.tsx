@@ -1,4 +1,5 @@
 import { Search, User, Bell } from "lucide-react";
+import LogoutButton from "./LogoutButton";
 
 export default function Header() {
 return (
@@ -31,6 +32,7 @@ return (
             className="text-white group-hover:text-[#03DAC6] transition-colors"
         />
         </button>
+        <LogoutButton />
     </div>
     </header>
 );
